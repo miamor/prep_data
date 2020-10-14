@@ -41,10 +41,12 @@ def copy_reports():
 
 def remove_dup():
     l = []
-    for filename in os.listdir(NEW_REPORT_DIR+'__'):
+    for filename in os.listdir(NEW_REPORT_DIR):
+        print('filename', filename)
         sha256 = filename.split('__')[1]
-        if sha256 not in l:
-            shutil.move(NEW_REPORT_DIR+'__/'+filename, NEW_REPORT_DIR+'/'+filename)
+        if sha256 in l:
+            print('\t Duplicated')
+            shutil.move(NEW_REPORT_DIR+'/'+filename, NEW_REPORT_DIR+'__dup/'+filename)
             l.append(sha256)
 
 

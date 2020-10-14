@@ -18,7 +18,7 @@ count = 0
 
 files = ['007b3fad8b53c10b6a9c87a956ca035f1f8cf882e95ffd798343969665382b9e']
 
-FROM_DIR = False
+FROM_DIR = True
 
 
 
@@ -28,35 +28,39 @@ FROM_DIR = False
 if FROM_DIR:
 
     files_to_skip = []
-    with open('data_pickle/done.txt', 'r') as f:
-        for line in f.readlines():
-            filename = line.split(' ')[1].split('/')[-1]
-            files_to_skip.append(filename)
+    # with open('data_pickle/done.txt', 'r') as f:
+    #     for line in f.readlines():
+    #         filename = line.split(' ')[1].split('/')[-1]
+    #         files_to_skip.append(filename)
 
 
-    for filename in os.listdir(BIN_ROOT+'/TuTu/benign'):
+    for filename in os.listdir(BIN_ROOT+'/none_new'):
         if filename in files_to_skip:
             continue
+        
+        # if count > 0:
+        #     continue
 
         count += 1
 
-        filepath = BIN_ROOT+'/TuTu/benign/'+filename
+        filepath = BIN_ROOT+'/none_new/'+filename
 
         with open(filepath, "rb") as sample:
-            # print(count, filepath)
+        # if True:
+            print(count, filepath)
 
             files = {"file": sample}
             data = {"enforce_timeout": True, "timeout": cuckoo_timeout}
             r = requests.post(REST_URL, headers=HEADERS, files=files, data=data)
 
-            # files = {"files[]": sample}
+            # files = {"files[]": open(filepath, "rb")}
             # r = requests.post(SUBMIT_URL, files=files)
 
             # print('\t', r)
             response = r.json()
             # print('\t Task', response['data'])
-            # print('\t Task', response['task_id'])
-            print(count, filepath, ' Task', response['task_id'])
+            print('\t Task', response['task_id'])
+            # print(count, filepath, ' Task', response['task_id'])
 
 else:
 

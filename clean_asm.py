@@ -1,11 +1,14 @@
 import os
 import re
-
+import shutil
 
 # p = re.compile(r'(.*)(\||\\|\<|\>)\s*(.*)')
-p = re.compile(r'(.*)(\||\│|\╎|\└|\\|\<|\>)\s(.*)')
+p = re.compile(r'(.*)(\,|\:|\||\│|\╎|\└|\\|\<|\>)\s(.*)')
 
-root = '../asm_raw'
+set = 'TuTu'
+root = '../asm_raw/'+set
+
+
 
 for dirname in os.listdir(root):
     dir = os.path.join(root, dirname)
@@ -18,7 +21,11 @@ for dirname in os.listdir(root):
             lines = fo.readlines()
             for line in lines:
                 line = ' '.join((line).split()).strip()
-                # print('line[0]', line[0])
+                # print('line', line)
+
+                if len(line) == 0:
+                    continue
+
                 if line[0] not in ['/', ';']:
                     # cleaned.append(line)
 
@@ -49,8 +56,11 @@ for dirname in os.listdir(root):
                     #     cleaned.append(lin)
 
         # print('* cleaned\n', '\n'.join(cleaned))
-        with open('../asm_cleaned/{}/{}'.format(dirname, file), 'w') as fw:
-            fw.write('\n'.join(cleaned))
+        if not os.path.exists('../asm_cleaned/{}/{}/{}'.format(set, dirname, file)):
+        # if True:
+	        with open('../asm_cleaned/{}/{}/{}'.format(set, dirname, file), 'w') as fw:
+	            print('Save to ../asm_cleaned/{}/{}/{}'.format(set, dirname, file))
+	            fw.write('\n'.join(cleaned))
 
 
 # p = re.compile(r'(.*)(\||\│|\\|\<|\>)\s(.*)')
